@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>魔方</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    ul,
+    ol li {
+      list-style: none;
+    }
+
+    .box {
+      width: 300px;
+      height: 300px;
+      /* border: 1px solid red; */
+      margin: 100px auto;
+      /* 立体效果 */
+      transform-style: preserve-3d;
+      transform: rotateX(-10deg) rotateY(-20deg);
+      position: relative;
+      animation: rotate 3s linear infinite 3s alternate;
+    }
+
+    @keyframes rotate{
+      0%{
+        transform: rotateX(-10deg) rotateY(-20deg);
+      }
+      100%{
+        transform:rotateX(360deg) rotateY(360deg);
+      }
+    }
+
+    .box>div {
+      width: 100%;
+      height: 100%;
+      /* 设置透明 */
+      opacity: 0.5;
+      position: absolute;
+    }
+
+    .box .front {
+      transform: translateZ(150px);
+    }
+
+    .box .back {
+      transform: translateZ(-150px);
+    }
+
+    .box .up {
+      transform: rotateX(90deg) translateZ(150px);
+    }
+
+    .box .down {
+      transform: rotateX(90deg) translateZ(-150px);
+    }
+
+    .box .left {
+      transform: rotateY(90deg) translateZ(-150px);
+    }
+
+    .box .right {
+      transform: rotateY(90deg) translateZ(150px);
+    }
+
+    .box ul li {
+      float: left;
+      width: 100px;
+      height: 100px;
+      border: 1px solid #fff;
+      box-sizing: border-box;
+      position: relative;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <!-- 前 -->
+    <div class="front"></div>
+    <!-- 后 -->
+    <div class="back"></div>
+    <!-- 左 -->
+    <div class="left"></div>
+    <!-- 右 -->
+    <div class="right"></div>
+    <!-- 上 -->
+    <div class="up"></div>
+    <!-- 下 -->
+    <div class="down"></div>
+  </div>
+  <script src="jquery.js"></script>
+  <script>
+    $(function () {
+      /* 获取所需元素 */
+      var box = $('.box');
+      var divs = box.children();
+      /* 定义颜色数组 */
+      var arrColor = ['pink', 'deeppink', 'skyblue', 'greenyellow', 'purple', 'orange'];
+      /* 遍历每一个div,添加ul分割成9个面 */
+      divs.each(function (index, item) {
+        var ul = $('<ul></ul>');
+        $(item).append(ul);
+        for (var i = 0; i < 9; i++) {
+          var list = $('<li></li>');
+          ul.append(list);
+          list.css('backgroundColor', arrColor[index]);
+        }
+      })
+      /* 定义随机位置 */
+      var arrPosition = [];
+      for (var i = 0; i < 54; i++) {
+        arrPosition.push(parseInt(Math.random() * 350));
+      }
+      /* 遍历每个li添加定位 */
+      $('li').each(function (index, item) {
+        $(item).css({
+          'left': arrPosition[index],
+          'top': arrPosition[index]
+        });
+      });
+
+      /* 回归原位 */
+      $('li').each(function (index, item) {
+        $(item).animate({'left':0,'top':0},3000);
+      });
+
+    });
+  </script>
+</body>
+
+</html>
